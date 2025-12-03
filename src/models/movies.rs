@@ -1,4 +1,4 @@
-use std::io;
+use crate::utils::{constants, helper};
 use uuid::Uuid;
 
 pub struct MoviesDb {
@@ -6,15 +6,15 @@ pub struct MoviesDb {
 }
 #[derive(Debug)]
 pub struct MovieStruct {
-    movie_id: Uuid,
-    name: String,
-    director: String,
-    rating: f64,
-    launch_date: String,
-    time: String,
-    ticket_price: f64,
-    no_of_tickets_sold: u16,
-    no_of_tickets_unsold: u16,
+    pub movie_id: Uuid,
+    pub name: String,
+    pub director: String,
+    pub rating: f64,
+    pub launch_date: String,
+    pub time: String,
+    pub ticket_price: f64,
+    pub no_of_tickets_sold: u16,
+    pub no_of_tickets_unsold: u16,
 }
 
 impl MoviesDb {
@@ -30,28 +30,11 @@ impl MoviesDb {
 }
 
 impl MovieStruct {
-    pub fn set_movie_details(
-        movie_db: &mut MoviesDb,
-        name: String,
-        director: String,
-        rating: f64,
-        launch_date: String,
-        time: String,
-        ticket_price: f64,
-        no_of_tickets_sold: u16,
-        no_of_tickets_unsold: u16,
-    ) {
-        let movie = MovieStruct {
-            movie_id: Uuid::new_v4(),
-            name,
-            director,
-            rating,
-            launch_date,
-            time,
-            ticket_price,
-            no_of_tickets_sold,
-            no_of_tickets_unsold,
-        };
-        movie_db.movies_list.push(movie);
+    pub fn initialze(movie_db: &mut MoviesDb) {
+        let movies_list = constants::json_to_array();
+        for item in &movies_list {
+            let movie = helper::set_movie_details(item);
+            movie_db.movies_list.push(movie);
+        }
     }
 }
